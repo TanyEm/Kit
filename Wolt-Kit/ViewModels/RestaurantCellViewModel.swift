@@ -25,15 +25,16 @@ public class RestaurantCellViewModel: ObservableObject {
                     print(error.localizedDescription)
                 }
                 
+
                 let restaurantToShow = Restaurant(
                     id: restaurant.id.oid,
                     title: restaurant.name[0].value,
-                    description: restaurant.description[0].value,
+                    description: (!restaurant.description.isEmpty) ? restaurant.description[0].value : "",
                     isLiked: isLiked,
-                    img: restaurant.listImage
+                    img: (!restaurant.listImage.isEmpty) ? restaurant.listImage : ""
                 )
-                
                 self.restaurantsToShow.append(restaurantToShow)
+
             }
             
             result(self.restaurantsToShow)

@@ -32,7 +32,6 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         self.viewModel.getRestaurantsWithLikes(self.locationManager) { list in
             DispatchQueue.main.async {
                 self.restaurantList = list
