@@ -5,7 +5,7 @@ enum DataError: Error {
 }
 
 protocol LikeManager {
-    func createLike(likeRest: LikeModel)
+    func appendLike(likeRest: LikeModel)
     func getLikeStatus(id: String) throws -> LikeModel
     func removeLike(id: String) throws
 }
@@ -55,7 +55,22 @@ class LikeStatusManager: LikeManager {
         
     //MARK: Likes management
     
-    func createLike(likeRest: LikeModel) {
+    func appendLike(likeRest: LikeModel) {
+        
+        var alreadyExists = false
+        
+        // safety check in case the like already exists
+        for item in items {
+            if item.id == likeRest.id {
+                alreadyExists = true
+                break
+            }
+        }
+        
+        if alreadyExists {
+            return
+        }
+        
         items.append(likeRest)
         saveLikeStatus()
     }
@@ -74,6 +89,7 @@ class LikeStatusManager: LikeManager {
         for (idx, el) in items.enumerated() {
             if el.id == id {
                 idxToRemove = idx
+                items.remove(at: idx)
                 break
             }
         }
@@ -82,7 +98,7 @@ class LikeStatusManager: LikeManager {
             throw DataError.likeNotFound(id: id)
         }
         
-        items.remove(at: idxToRemove)
+        //items.remove(at: idxToRemove)
         saveLikeStatus()
     }
 

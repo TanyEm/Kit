@@ -14,6 +14,7 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     private var restaurantList = [Restaurant]()
     
     let locationManager = CLLocationManager()
+//    let dataManager = LikeManager()
 
 
     override func viewDidLoad() {
@@ -85,9 +86,36 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         cell.descript.text = rest.description
         
         configureLike(for: cell, with: rest)
+        
+        print("cell status image", cell.status.image)
+        
         congigureImg(for: cell, with: rest)
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+            
+            var item = restaurantList[indexPath.row]
+            let rest = LikeModel(id: item.id, isLked: !item.isLiked)
+            
+            if item.isLiked {
+                viewModel.removeLike(id: rest.id)
+            } else {
+                viewModel.appendLike(likeRest: rest)
+            }
+                
+            item.isLiked = !item.isLiked
+            
+            restaurantList[indexPath.row].isLiked = item.isLiked
+            
+            configureLike(for: cell as! RestaurantTableViewCell, with: item)
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 
 }

@@ -9,5 +9,5 @@ import Foundation
 
 struct LikeModel: Codable {
     let id: String
-    let isLked: Bool
+    var isLked: Bool
 }

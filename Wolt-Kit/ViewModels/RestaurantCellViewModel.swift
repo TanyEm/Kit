@@ -4,7 +4,7 @@ import CoreLocation
 public class RestaurantCellViewModel: ObservableObject {
     
     private let restService: RestaurantsService
-    private let likeService: LikeStatusManager
+    private let likeService: LikeManager
     
     var restaurantsToShow = [Restaurant]()
     
@@ -12,6 +12,19 @@ public class RestaurantCellViewModel: ObservableObject {
         self.restService = RestaurantsService()
         self.likeService = LikeStatusManager()
     }
+        
+    func removeLike(id: String){
+        do {
+            try likeService.removeLike(id: id)
+        } catch {
+            print("Unexpected error: \(error.localizedDescription).")
+        }
+    }
+    
+    func appendLike(likeRest: LikeModel) {
+        likeService.appendLike(likeRest: likeRest)
+    }
+    
     
     func getRestaurantsWithLikes(_ manager: CLLocationManager, _ result: @escaping ([Restaurant]) -> ()) {
         restService.getRestaurantList(manager) { (restaurantsList) in
