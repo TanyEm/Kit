@@ -13,14 +13,13 @@ class RestaurantTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var descript: UILabel!
     @IBOutlet weak var status: UIImageView!
-    
+        
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        img.layer.cornerRadius = img.frame.width/3
-        img.layer.borderWidth = 1.0
-        img.layer.borderColor = UIColor.white.cgColor
+            
         img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -28,7 +27,5 @@ class RestaurantTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    
-
 }
+

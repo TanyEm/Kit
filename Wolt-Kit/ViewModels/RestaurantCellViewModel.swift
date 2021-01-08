@@ -35,7 +35,7 @@ public class RestaurantCellViewModel: ObservableObject {
                     let likeStatus = try self.likeService.getLikeStatus(id: restaurant.id.oid)
                     isLiked = likeStatus.isLked
                 } catch {
-                    print(error.localizedDescription)
+                    //The restaurant without like
                 }
                 
 
@@ -46,7 +46,9 @@ public class RestaurantCellViewModel: ObservableObject {
                     isLiked: isLiked,
                     img: (!restaurant.listImage.isEmpty) ? restaurant.listImage : ""
                 )
-                self.restaurantsToShow.append(restaurantToShow)
+                if self.restaurantsToShow.count < 15 {
+                    self.restaurantsToShow.append(restaurantToShow)
+                }
 
             }
             

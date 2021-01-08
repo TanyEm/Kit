@@ -35,7 +35,6 @@ struct RestaurantListRequest {
 
             do {
                 let resp = try JSONDecoder().decode(RestaurantRequestModel.self, from: data!)
-//                print("response", resp.results)
                 callback(resp.results )
                 } catch {
                     print("Error while decoding the response", error)

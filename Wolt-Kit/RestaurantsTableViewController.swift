@@ -13,9 +13,10 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     private let viewModel = RestaurantCellViewModel()
     private var restaurantList = [Restaurant]()
     
+    
+    var refreshContro = UIRefreshControl()
     let locationManager = CLLocationManager()
-//    let dataManager = LikeManager()
-
+    var timer = Timer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +31,25 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+
+//        self.timer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+//        RunLoop.main.add(self.timer, forMode: RunLoop.Mode.default)
     }
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
+        getData()
+    }
+    
+    @objc func refresh(_ sender: AnyObject) {
+        // a refresh of the table
+        getData()
+    }
+    
+    // MARK: - Get Data
+    
+    func getData() {
         self.viewModel.getRestaurantsWithLikes(self.locationManager) { list in
             DispatchQueue.main.async {
                 self.restaurantList = list
@@ -61,9 +78,11 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
                 let image = UIImage(data: data) else {
                     return
                 }
+            cell.img.layer.cornerRadius = 10
             cell.img.image = image
         }
     }
+
 
     // MARK: - Table view data source
 
@@ -86,9 +105,6 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         cell.descript.text = rest.description
         
         configureLike(for: cell, with: rest)
-        
-        print("cell status image", cell.status.image)
-        
         congigureImg(for: cell, with: rest)
         
         return cell
